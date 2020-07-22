@@ -16,3 +16,6 @@ temp??.*
 # ignore logs
 logs/*
 logs*/
+
+# ignore Eigen Directory
+Eigen/*
