@@ -1,8 +1,8 @@
 # ignore the pycharm specific setting test_files
-.idea/*
+**/.idea/*
 
 # ignore build directory
-cmake-build-debug/*
+**/cmake-build-debug/*
 
 # ignore the following test and temp test_files
 test.*
@@ -17,5 +17,3 @@ temp??.*
 logs/*
 logs*/
 
-# ignore Eigen Directory
-Eigen/*
