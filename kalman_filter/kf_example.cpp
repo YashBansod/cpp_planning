@@ -8,6 +8,7 @@ int main() {
     std::cout << "Hello, World! This is the Kalman Filter Example." << std::endl;
 
     KalmanFilter2D kf_2d;
+    std::cout << "\nState Transition Function:\n" << kf_2d.get_state_fn() << std::endl;
     Matrix<float, 4, 1> state = kf_2d.get_state();
     Matrix<float, 4, 4> covariance = kf_2d.get_covariance();
     std::cout << "Step 0, \nState:\n" << state << "\nCovariance:\n" << covariance << std::endl;
