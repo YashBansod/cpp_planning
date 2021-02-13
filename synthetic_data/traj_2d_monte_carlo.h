@@ -2,26 +2,26 @@
  * @brief
  *
  * @file
- *
- * @ingroup     synthetic_data
+ *n
+ * @igroup     synthetic_data
  */
 
 /*------------------------------------------        Include Files           ------------------------------------------*/
 #include "Eigen/Dense"
+#include "random_data/random_matrix.h"
 
 /*------------------------------------------        Using Statements      `------------------------------------------*/
 using namespace std;
 using Eigen::Matrix;
 using Eigen::MatrixXf;
 
-/*------------------------------------------        Class Declaration       ------------------------------------------*/
-#ifndef CPP_ROBOTICS_TRAJ_2D_MONTE_CARLO_H
-#define CPP_ROBOTICS_TRAJ_2D_MONTE_CARLO_H
+/*------------------------------------------        Func Definition         ------------------------------------------*/
+#ifndef CPP_ROBOTICS_TRAJ_2D_MONTE_CARLO
+#define CPP_ROBOTICS_TRAJ_2D_MONTE_CARLO
 
+MatrixXf traj_2d_monte_carlo(const int traj_length){
+    MatrixXf traj = random_uniform_mat(2, traj_length, 0, 100);
+    return traj;
+}
 
-class traj_2d_monte_carlo {
-
-};
-
-
-#endif //CPP_ROBOTICS_TRAJ_2D_MONTE_CARLO_H
+#endif //CPP_ROBOTICS_TRAJ_2D_MONTE_CARLO

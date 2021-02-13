@@ -59,6 +59,9 @@ int main() {
     std::cout << std::endl << "\t**** OTHER GRAPH DATA ****" << std::endl;
     std::cout << "Graph has " << boost::num_vertices(g) << " vertices" << std::endl;
     std::cout << "Graph has " << boost::num_edges(g) << " edges" << std::endl;
+    auto [e, end_e] = boost::edges(g);
+    std::cout << "Graph has edge (2, 3): " << std::boolalpha << boost::edge(2, 3, g).second << std::endl;
+    std::cout << "Graph has edge (6, 3): " << std::boolalpha << boost::edge(6, 3, g).second << std::endl;
 
     return 0;
 }
