@@ -3,6 +3,7 @@
 
 # ignore build directory
 **/cmake-build-debug/
+**/build/
 
 # ignore logs
 **/logs/
