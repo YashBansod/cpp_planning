@@ -18,25 +18,24 @@
 #ifndef A_STAR_SEARCH_H
 #define A_STAR_SEARCH_H
 namespace a_star {
-    inline float eu_dist_heuristic(Node &node_1, Node &node_2) {
-        return (float) std::sqrt(std::pow(node_1.x - node_2.x, 2) + std::pow(node_1.y - node_2.y, 2));
+    inline double eu_dist_heuristic(Node &node_1, Node &node_2) {
+        return std::sqrt(std::pow(node_1.x - node_2.x, 2) + std::pow(node_1.y - node_2.y, 2));
     }
 
-    inline float man_dist_heuristic(Node &node_1, Node &node_2) {
+    inline double man_dist_heuristic(Node &node_1, Node &node_2) {
         return std::abs(node_1.x - node_2.x) + std::abs(node_1.y - node_2.y);
     }
 
-    inline float zero_heuristic(Node &node_1, Node &node_2) {
+    inline double zero_heuristic(Node &node_1, Node &node_2) {
         return 0;
     }
 
-    bool search(int start_node_id, int goal_node_id, Graph &g, const std::function<float(Node & , Node & )> &heuristic,
-                const float weight = 1, const bool verbose = false) {
+    bool search(int start_node_id, int goal_node_id, Graph &g, const std::function<double(Node & , Node & )> &heuristic,
+                const double weight = 1, const int verbose = 0) {
 
         auto gt_compare = [weight](const Node *l, const Node *r) {
-            return (l->g_cost + weight * l->h_cost) > (r->g_cost + weight * r->h_cost);
-        };
-        std::priority_queue<Node *, std::deque<Node *>, decltype(gt_compare)> open_nodes(gt_compare);
+            return (l->g_cost + weight * l->h_cost) > (r->g_cost + weight * r->h_cost);};
+        std::priority_queue<Node *, std::vector<Node *>, decltype(gt_compare)> open_nodes(gt_compare);
 
         g[start_node_id].g_cost = 0;
         g[start_node_id].h_cost = heuristic(g[start_node_id], g[goal_node_id]);
@@ -45,6 +44,7 @@ namespace a_star {
         int curr_node_id;
 
         while (!open_nodes.empty()) {
+
             curr_node_id = open_nodes.top()->node_id;
             open_nodes.pop();
             g[curr_node_id].status = closed;
@@ -58,13 +58,21 @@ namespace a_star {
                     g[dst_v].g_cost = g[curr_node_id].g_cost + g[*e_iter].cost;
                     g[dst_v].p_node_id = curr_node_id;
                     open_nodes.emplace(&g[dst_v]);
-                    if (verbose) std::cout << "Opened: " << g[dst_v] << std::endl;
+                    if (verbose > 1) std::cout << "Opened: " << g[dst_v] << std::endl;
                 } else if (g[dst_v].status == open) {
-                    float new_cost = g[curr_node_id].g_cost + g[*e_iter].cost;
-                    if (new_cost < g[dst_v].g_cost) {
+                    double new_cost = g[curr_node_id].g_cost + g[*e_iter].cost;
+                    if (new_cost < g[dst_v].g_cost - 1e-15) {
                         g[dst_v].g_cost = new_cost;
                         g[dst_v].p_node_id = curr_node_id;
-                        if (verbose) std::cout << "Modified: " << g[dst_v] << std::endl;
+                        if (verbose > 1) std::cout << "Modified: " << g[dst_v] << std::endl;
+                    }
+                } else {double new_cost = g[curr_node_id].g_cost + g[*e_iter].cost;
+                    if (new_cost < g[dst_v].g_cost - 1e-15) {
+                        g[dst_v].status = open;
+                        g[dst_v].g_cost = new_cost;
+                        g[dst_v].p_node_id = curr_node_id;
+                        open_nodes.emplace(&g[dst_v]);
+                        if (verbose > 1) std::cout << "Reopened: " << g[dst_v] << std::endl;
                     }
                 }
             }
