@@ -1,0 +1,43 @@
+NOTE that the IDs here refer to the positions of nodes in the files assuming 1-based indexing (and C++ code assumes 0-based indexing) so if you use the C++ code that I have provided (or other 0-based indexing code that you have written yourself), then you'll need to subtract 1 from the values in this file when you set start and goal IDs in your code. In other words node ID 1 in this file refers to the first node in the file, which will be stored as node 0 in the C++ code.
+
+
+Problem 1:
+node file: nodes_1.txt
+edge file: edges_with_costs_1.txt
+start node ID: 9
+goal node ID: 5
+
+
+
+Problem 2:
+node file: nodes_2.txt
+edge file: edges_with_costs_2.txt
+start node ID: 88
+goal node ID: 9
+
+
+
+Problem 3:
+node file: nodes_3.txt
+edge file: edges_with_costs_3.txt
+start node ID: 30
+goal node ID: 95
+
+
+Problem 4:
+node file: nodes_4.txt
+edge file: edges_with_costs_4.txt
+start node ID: 38
+goal node ID: 502
+
+
+Problem 5:
+node file: nodes_5.txt
+edge file: edges_with_costs_5.txt
+start node ID: 38
+goal node ID: 5002
+
+
+
+
+

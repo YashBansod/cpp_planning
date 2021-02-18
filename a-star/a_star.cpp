@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 
     // Weighted A-Star Search
     auto t1 = std::chrono::high_resolution_clock::now();
-    bool search_status = a_star::search_3(c.start_id, c.goal_id, g, a_star::eu_dist_heuristic, c.weight, c.verbose);
+    bool search_status = a_star::search_1(c.start_id, c.goal_id, g, a_star::eu_dist_heuristic, c.weight, c.verbose);
     auto t2 = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
 
