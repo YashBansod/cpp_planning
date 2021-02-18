@@ -26,12 +26,13 @@ namespace a_star {
         double x = 0, y = 0;
         int p_node_id = -1;
         node_stat status = undef;
-        double g_cost = -1, h_cost = 0;
+        double g_cost = -1, h_cost = 0, f_cost=-1;
     };
 
     inline std::ostream &operator<<(std::ostream &o_str, const Node &n) {
-        o_str << "node_id: " << n.node_id + 1 << ", x: " << n.x << ", y: " << n.y << ", p_node_id: " << n.p_node_id + 1
-              << ", status: " << labels[n.status] << ", g_cost: " << n.g_cost << ", h_cost: " << n.h_cost << " ";
+        o_str << "node_id: " << n.node_id + 1 << ", x: " << n.x << ", y: " << n.y <<
+                ", p_node_id: " << n.p_node_id + 1 << ", status: " << labels[n.status] <<
+                ", g_cost: " << n.g_cost << ", h_cost: " << n.h_cost << ", f_cost: " << n.f_cost<< " ";
         return o_str;
     }
 

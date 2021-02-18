@@ -6,6 +6,9 @@
 **/cmake-build-release/
 **/build/
 
+# ignore test_sandbox
+**/test_sandbox
+
 # ignore logs
 **/logs/
 
