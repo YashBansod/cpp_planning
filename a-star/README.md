@@ -9,7 +9,7 @@ The terminal arguments parsing is done using Boost Program Option Library.
 See the [SAMPLE_RUNS.md](./SAMPLE_RUNS.md) file to see graph output of A* search on input files available in 
 [inputs](./inputs). The output files of the search are saved in [outputs](./outputs).
 
-There are 3 search functions that are defined in [search.h](./search.h). These functions implement the A* search
+There are 3 search functions that are defined in [search.h](src/search.h). These functions implement the A* search
 using varying data structures for managing its Open Nodes List. These functions are:
 ```c++
 // Open Nodes List uses std::multiset. Element needs to be removed before modification and then re-inserted.
@@ -36,12 +36,12 @@ a doubly linked list and insertion sort was used to keep the list sorted at all 
 The run time complexity of `search_1` and `search_2` is *O(nlogn)*. The run time complexity of `search_3` is *O(n^2)*.  
 Practically `search_1` runs the fastest, followed by `search_2` and `search_3`.
 
-An example A* search can be executed by compiling and running the [a_star.cpp](./a_star.cpp) file. See the
+An example A* search can be executed by compiling and running the [a_star.cpp](src/a_star.cpp) file. See the
 [Run Instructions](#run-instructions) below for more details on building and running the project.
 
 The code was written to allow a desired level of configurability. Run the code with -h/--help tag to know more.  
 ```
-./a_star -h
+./cmake-build-release/a_star -h
 
 Allowed options:
   -h [ --help ]                               Print the help message
@@ -56,8 +56,8 @@ Allowed options:
   -t [ --search_fp ] arg (=search_output.txt) Relative/absolute path to the Search output file
 ```
 
-Also, the program can be compiled to use a heuristic from a list of heuristics defined in file [search.h](./search.h).  
-Some examples of heuristics are: eu_dist_heuristic, man_dist_heuristic, zero_heuristic.  
+Also, the program can be compiled to use a heuristic from a list of heuristics defined in file [search.h](src/search.h).  
+Some examples of heuristics are: *eu_dist_heuristic*, *man_dist_heuristic*, *zero_heuristic*.  
 
 ### Run Instructions
 **For Ubuntu:**  
@@ -132,7 +132,7 @@ Successfully opened the graph file: ./outputs/search_output_4.txt
 Successfully wrote graph file: "./outputs/search_output_4.txt".
 ```
 
-This search was then visualized using [search_viz.py](./support_files/search_viz.py)
+This search was then visualized using [search_viz.py](./support_files/search_viz.py)  
 ![sol_4.png](./outputs/sol_4.png)
 
 See the [SAMPLE_RUNS.md](./SAMPLE_RUNS.md) file to see graph output of A* search on input files available in 

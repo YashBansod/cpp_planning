@@ -24,7 +24,7 @@ Successfully wrote path file: "./outputs/path_output_1.txt".
 Successfully opened the graph file: ./outputs/search_output_1.txt
 Successfully wrote graph file: "./outputs/search_output_1.txt".
 ```
-This search was then visualized using [search_viz.py](./support_files/search_viz.py)
+This search was then visualized using [search_viz.py](./support_files/search_viz.py)  
 ![sol_1.png](./outputs/sol_1.png)
 
 ```shell script
@@ -53,7 +53,7 @@ Successfully wrote path file: "./outputs/path_output_2.txt".
 Successfully opened the graph file: ./outputs/search_output_2.txt
 Successfully wrote graph file: "./outputs/search_output_2.txt".
 ```
-This search was then visualized using [search_viz.py](./support_files/search_viz.py)
+This search was then visualized using [search_viz.py](./support_files/search_viz.py)  
 ![sol_2.png](./outputs/sol_2.png)
 
 ```shell script
@@ -82,7 +82,7 @@ Successfully wrote path file: "./outputs/path_output_3.txt".
 Successfully opened the graph file: ./outputs/search_output_3.txt
 Successfully wrote graph file: "./outputs/search_output_3.txt".
 ```
-This search was then visualized using [search_viz.py](./support_files/search_viz.py)
+This search was then visualized using [search_viz.py](./support_files/search_viz.py)  
 ![sol_3.png](./outputs/sol_3.png)
 
 ```shell script
@@ -111,7 +111,7 @@ Successfully wrote path file: "./outputs/path_output_4.txt".
 Successfully opened the graph file: ./outputs/search_output_4.txt
 Successfully wrote graph file: "./outputs/search_output_4.txt".
 ```
-This search was then visualized using [search_viz.py](./support_files/search_viz.py)
+This search was then visualized using [search_viz.py](./support_files/search_viz.py)  
 ![sol_4.png](./outputs/sol_4.png)
 
 ```shell script
@@ -140,5 +140,5 @@ Successfully wrote path file: "./outputs/path_output_5.txt".
 Successfully opened the graph file: ./outputs/search_output_5.txt
 Successfully wrote graph file: "./outputs/search_output_5.txt".
 ```
-This search was then visualized using [search_viz.py](./support_files/search_viz.py)
+This search was then visualized using [search_viz.py](./support_files/search_viz.py)  
 ![sol_5.png](./outputs/sol_5.png)
