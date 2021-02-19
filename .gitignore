@@ -1,5 +1,6 @@
 # ignore the pycharm specific setting test_files
 **/.idea/
+**/venv/
 
 # ignore build directory
 **/cmake-build-debug/
