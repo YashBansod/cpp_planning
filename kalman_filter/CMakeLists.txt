@@ -8,5 +8,5 @@ include_directories(${CMAKE_SOURCE_DIR})
 set(Eigen3_DIR /home/yashb/cpp_libs/eigen-3.3.9)
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
-add_executable (kf_example kf_example.cpp)
+add_executable (kf_example src/kf_example.cpp)
 target_link_libraries(kf_example Eigen3::Eigen)
