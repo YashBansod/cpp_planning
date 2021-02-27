@@ -34,19 +34,24 @@ namespace rrt {
         return false;
     }
 
-    std::pair<int, bool> search_1(const Point2D &start, const GoalZone &goal, Graph &g, Workspace &w_space,
-                  const ObstacleVec &obs_vec, const double eps = 1, const int iter_lim = 1e8, const int verbose = 0) {
+    std::pair<int, bool>
+    search(const Point2D &start, const GoalZone &goal, Graph &g, Workspace &w_space, const ObstacleVec &obs_vec,
+           const std::function<bool(Point2D, Point2D, const CircleObstacle&)> &collision_func,
+           const double eps = 1, const int iter_lim = 1e8, const int verbose = 0) {
 
         auto s_id = boost::add_vertex(g);
         g[s_id].node_id = s_id;
         g[s_id].node = start;
         g[s_id].g_cost = 0;
+        if (verbose > 1) std::cout << "Added Start Node: " << g[s_id] << std::endl;
 
         int g_id = -1;
         bool found_goal = false;
         // If goal is completely covered by an obstacle then return failure.
-        for(auto& x: obs_vec)
+        for(auto& x: obs_vec){
             if(x.center.eu_dist(goal.center) <= std::max(x.r, goal.r) - std::min(x.r, goal.r)) return {g_id, found_goal};
+        }
+
 
         for(int _iter = 0; (not found_goal and _iter < iter_lim); ++_iter){
             Point2D rand_pt = w_space.sample();
@@ -68,7 +73,7 @@ namespace rrt {
             }
             bool collision = false;
             for(auto& obs : obs_vec){
-                collision = collision_check(g[min_ind].node, rand_pt, obs);
+                collision = collision_func(g[min_ind].node, rand_pt, obs);
                 if(collision) break;
             }
             if(not collision) {
@@ -83,10 +88,13 @@ namespace rrt {
                 g[e].target = n_id;
                 g[e].cost = min_dist;
 
+                if (verbose > 2) std::cout << "Added Node: " << g[n_id] << std::endl;
+
                 double goal_dist = rand_pt.eu_dist(goal.center);
                 if(goal_dist < goal.r){
                     g_id = n_id;
                     found_goal = true;
+                    if (verbose > 1) std::cout << "Found Node: " << g[n_id] << "in GoalZone: " << goal << std::endl;
                 }
             }
         }

@@ -13,7 +13,7 @@ There are 3 search functions that are defined in [search.h](src/search.h). These
 using varying data structures for managing its Open Nodes List. These functions are:
 ```c++
 // Open Nodes List uses std::multiset. Element needs to be removed before modification and then re-inserted.
-bool search_1(int s_node_id, int g_node_id, Graph &g, const std::function<double(Node & , Node & )> &h_func,
+bool search(int s_node_id, int g_node_id, Graph &g, const std::function<double(Node & , Node & )> &h_func,
                 const double weight = 1, const int verbose = 0);
 
 // Open Nodes List uses std::priority_queue. Heap needs to be remade after modification of an element.
@@ -24,7 +24,7 @@ bool search_2(int s_node_id, int g_node_id, Graph &g, const std::function<double
 bool search_3(int s_node_id, int g_node_id, Graph &g, const std::function<double(Node & , Node & )> &h_func,
                 const double weight = 1, const int verbose = 0)
 ```
-The open nodes in the **a-star::search_1** algorithm are selected from a **std::multiset**. **std::multiset** internally 
+The open nodes in the **a-star::search** algorithm are selected from a **std::multiset**. **std::multiset** internally 
 uses red black trees to keep itself sorted.
 
 The open nodes in the **a-star::search_2** algorithm are selected from a **std::priority_queue**. 
@@ -33,8 +33,8 @@ The open nodes in the **a-star::search_2** algorithm are selected from a **std::
 The open nodes in the **a-star::search_3** algorithm are selcted from a sorted **std::list**. **std::list** implements 
 a doubly linked list and insertion sort was used to keep the list sorted at all times.
 
-The run time complexity of `search_1` and `search_2` is *O(nlogn)*. The run time complexity of `search_3` is *O(n^2)*.  
-Practically `search_1` runs the fastest, followed by `search_2` and `search_3`.
+The run time complexity of `search` and `search_2` is *O(nlogn)*. The run time complexity of `search_3` is *O(n^2)*.  
+Practically `search` runs the fastest, followed by `search_2` and `search_3`.
 
 An example A* search can be executed by compiling and running the [a_star.cpp](src/a_star.cpp) file. See the
 [Run Instructions](#run-instructions) below for more details on building and running the project.

@@ -29,7 +29,8 @@ int main(int argc, char **argv) {
     rrt::Graph g;
 
     auto t1 = std::chrono::high_resolution_clock::now();
-    auto [g_id, search_status] = search_1(c.start, c.goal, g, w_space,obs_vec, c.eps, c.iter_lim, c.verbose);
+    auto [g_id, search_status] = search(c.start, c.goal, g, w_space, obs_vec,
+                                        rrt::collision_check, c.eps, c.iter_lim, c.verbose);
     auto t2 = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
 

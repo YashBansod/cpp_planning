@@ -34,6 +34,7 @@ def main():
 
     lw = [0.5, 1, 2]
     ms = [5, 8, 10]
+    sz = [15, 13]
 
     obstacles_fp = "../inputs/obstacles.txt"
     path_fp = "../outputs/path_output_%d.txt" % file_index
@@ -72,7 +73,7 @@ def main():
     lc2 = LineCollection(s_edges, colors='m', linewidths=lw[1], linestyles='--')
 
     fig, ax = plt.subplots()
-    fig.set_size_inches(10, 9)
+    fig.set_size_inches(sz[0], sz[1])
     for obs in obstacles:
         ax.add_patch(plt.Circle((obs[0], obs[1]), obs[2], color='black'))
     ax.add_patch(plt.Circle((goal[0], goal[1]), goal[2], color='red', alpha=0.5))
