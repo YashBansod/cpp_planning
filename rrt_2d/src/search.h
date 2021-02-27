@@ -24,7 +24,7 @@ namespace rrt {
         b.y -= c.center.y;
         const double _a = std::pow(b.x - a.x, 2) + std::pow(b.y - a.y, 2);
         const double _b = 2 * (a.x * (b.x - a.x) + a.y * (b.y - a.y));
-        const double _c = std::pow(a.x, 2) + std::pow(a.y, 2) + std::pow(c.r, 2);
+        const double _c = std::pow(a.x, 2) + std::pow(a.y, 2) - std::pow(c.r, 2);
         const double discriminant = std::pow(_b, 2) - 4 * _a * _c;
         if (discriminant <= 0) return false;
         const double sqrt_disc = std::sqrt(discriminant);
@@ -85,16 +85,7 @@ namespace rrt {
 
                 double goal_dist = rand_pt.eu_dist(goal.center);
                 if(goal_dist < goal.r){
-                    g_id = boost::add_vertex(g);
-                    g[g_id].node_id = g_id;
-                    g[g_id].node = goal.center;
-                    g[g_id].p_node_id = n_id;
-                    g[g_id].g_cost = g[n_id].g_cost + goal_dist;
-
-                    auto g_e = boost::add_edge(n_id, g_id, g).first;
-                    g[g_e].source = n_id;
-                    g[g_e].target = g_id;
-                    g[g_e].cost = goal_dist;
+                    g_id = n_id;
                     found_goal = true;
                 }
             }
