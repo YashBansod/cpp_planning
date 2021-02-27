@@ -38,6 +38,12 @@ and other open-sourced libraries that simplify the code.
         <a href="./a-star"><b>A* Algorithm</b></a>  
         <div><span class="image fit"><img src="./a-star/outputs/sol_4.png"></span></div>
     </td>
+  </tr>
+  <tr>
+    <td> 
+        <a href="./a-star"><b>A* Algorithm</b></a>  
+        <div><span class="image fit"><img src="./a-star/outputs/sol_4.png"></span></div>
+    </td>
     <td> 
         <a href="./weighted_a-star"><b>Weighted A* Algorithm</b></a>  
         <div><span class="image fit"><img src="./weighted_a-star/outputs/sol_4.png"></span></div>
