@@ -6,8 +6,8 @@ I try my best to follow the clang-tidy guidelines. I believe that open-sourced c
 they are meant to be coded. Hence I try to make an optimal use of the latest C++17 features, the STL libraries, 
 and other open-sourced libraries that simplify the code.
 
-**Note:** Codes for visualizing the algorithms are written in Python 3.7.
-**Note:** Some codes for synthetic data generation are written in Python 3.7.
+**Note:** Codes for visualizing the algorithms are written in Python 3.7.  
+**Note:** Some codes for synthetic data generation are written in Python 3.7.  
 
 ## Table of Contents
 ### Algorithms
