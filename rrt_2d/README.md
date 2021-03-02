@@ -31,10 +31,13 @@ Allowed options:
   -b [ --bias ] arg (=0)                      The goal bias. Probability in range [0, 1]
   -e [ --epsilon ] arg (=1)                   The maximum distance covered by a new trajectory during exploration.
   -i [ --iter_lim ] arg (=100000000)          The maximum number of exploration iterations allowed.
+  -r [ --rand_seed ] arg (=-1)                The seed for the random number generator. -1 would mean 
+                                              non-deterministically random.
   -v [ --verbose ] [=arg(=1)] (=0)            Verbosity. Choose between 0, 1, 2 and 3
   -o [ --obs_fp ] arg (=obstacle.txt)         Relative/absolute path to the obstacle file
   -p [ --path_fp ] arg (=path_output.txt)     Relative/absolute path to the Path output file
   -t [ --search_fp ] arg (=search_output.txt) Relative/absolute path to the Search output file
+
 ```
 
 Also, the program can be compiled to use a collision detection function from a list of collision detection functions
@@ -87,8 +90,8 @@ Example IDE: CLion by Jetbrains, Visual Studio etc.
 
 ### Sample Run
 ```shell script
-./cmake-build-release/rrt_2d -s '(45,-45)' -g '(-45,45,15)' -e 5 -o ./inputs/obstacles.txt -p ./outputs/path_output_3.txt -t ./outputs/search_output_3.txt -v
-start: x: 45, y: -45 , goal: x: -45, y: 45 , r: 15 , bias: 0, epsilon: 5, verbose: 1, iter_lim: 100000000
+./cmake-build-release/rrt_2d -s '(45,-45)' -g '(-45,45,15)' -e 5 -o ./inputs/obstacles.txt -p ./outputs/path_output_3.txt -t ./outputs/search_output_3.txt -v -r 20
+start: x: 45, y: -45 , goal: x: -45, y: 45 , r: 15 , bias: 0, seed: 20, epsilon: 5, verbose: 1, iter_lim: 100000000
 obs_fp: ./inputs/obstacles.txt
 path_fp: ./outputs/path_output_3.txt
 search_fp: ./outputs/search_output_3.txt
@@ -97,7 +100,7 @@ Successfully opened the obstacle file: ./inputs/obstacles.txt
 The obstacle file has 20 obstacles.
 20 obstacles were added to obstacle vector.
 
-The search was successful. It took 203 microseconds.
+The search was successful. It took 116 microseconds.
 Start: x: 45, y: -45
 Goal: x: -45, y: 45 , r: 15
 

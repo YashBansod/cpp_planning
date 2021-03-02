@@ -29,7 +29,7 @@ namespace rrt {
     };
 
     inline std::ostream &operator<<(std::ostream &o_str, const Config &c) {
-        o_str << "start: " << c.start << ", goal: " << c.goal << ", bias: " << c.goal_bias <<
+        o_str << "start: " << c.start << ", goal: " << c.goal << ", bias: " << c.goal_bias << ", seed: " << c.r_seed <<
                 ", epsilon: " << c.eps <<", verbose: " << c.verbose << ", iter_lim: " << c.iter_lim <<
                 "\nobs_fp: " << c.obs_fp << "\npath_fp: " << c.path_fp << "\nsearch_fp: " << c.search_fp << " ";
         return o_str;
