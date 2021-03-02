@@ -21,7 +21,7 @@ namespace po = boost::program_options;
 #define RRT_2D_UTILS_H
 namespace rrt {
     struct Config {
-        int verbose = 0, iter_lim = 1e8;
+        int verbose = 0, iter_lim = 1e8, r_seed = -1;
         Point2D start;
         GoalZone goal;
         double eps = 1, goal_bias = 0.0;
@@ -51,6 +51,8 @@ namespace rrt {
                      "The maximum distance covered by a new trajectory during exploration.")
                     ("iter_lim,i", po::value<int>(&c.iter_lim)->default_value(1e8),
                      "The maximum number of exploration iterations allowed.")
+                    ("rand_seed,r", po::value<int>(&c.r_seed)->default_value(-1),
+                     "The seed for the random number generator. -1 would mean non-deterministically random.")
                     ("verbose,v", po::value<int>(&c.verbose)->implicit_value(1)->default_value(0),
                      "Verbosity. Choose between 0, 1, 2 and 3")
                     ("obs_fp,o", po::value<std::string>(&c.obs_fp)->default_value("obstacle.txt"),

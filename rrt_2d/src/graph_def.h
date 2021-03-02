@@ -44,17 +44,24 @@ namespace rrt {
         std::uniform_real_distribution<> dist_b;
         std::uniform_real_distribution<> dist_x;
         std::uniform_real_distribution<> dist_y;
-        Workspace(const Point2D& _p1, const Point2D& _p2, const Point2D& _g, double _b){
+
+        Workspace(const Point2D& _p1, const Point2D& _p2, const Point2D& _g, double _b, const int _s){
             p1 = _p1;
             p2 = _p2;
             goal = _g;
             bias = _b;
-            std::random_device rd;
-            gen = std::mt19937(rd());
+            if(_s == -1) gen = std::mt19937(std::random_device()());
+            else gen = std::mt19937(_s);
             dist_b = std::uniform_real_distribution<>(0, 1);
             dist_x = std::uniform_real_distribution<>(p1.x, p2.x);
             dist_y = std::uniform_real_distribution<>(p1.y, p2.y);
         }
+
+        void seed(int _s){
+            if(_s == -1) gen = std::mt19937(std::random_device()());
+            else gen = std::mt19937(_s);
+        }
+
         Point2D sample(){
             if (dist_b(gen) < bias) return goal; return Point2D(dist_x(gen), dist_y(gen));}
     };

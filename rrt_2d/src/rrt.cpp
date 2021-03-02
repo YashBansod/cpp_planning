@@ -21,7 +21,8 @@ int main(int argc, char **argv) {
     bool stat = rrt::parse_args(argc, argv, c);
     if(not stat) return -1;
 
-    rrt::Workspace w_space(rrt::Point2D(-50, -50), rrt::Point2D(50, 50), c.goal.center, c.goal_bias);
+    rrt::Workspace w_space(rrt::Point2D(-50, -50), rrt::Point2D(50, 50),
+                           c.goal.center, c.goal_bias, c.r_seed);
 
     rrt::ObstacleVec obs_vec;
     rrt::read_obstacles(c.obs_fp, obs_vec, c.verbose);
