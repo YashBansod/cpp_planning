@@ -50,6 +50,7 @@ namespace rrt {
         // If goal is completely covered by an obstacle then return failure.
         for(auto& x: obs_vec){
             if(x.center.eu_dist(goal.center) <= std::max(x.r, goal.r) - std::min(x.r, goal.r)) return {g_id, found_goal};
+            if(x.center.eu_dist(start) <= x.r) return {g_id, found_goal};
         }
 
 
