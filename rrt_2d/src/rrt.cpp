@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 
     auto t1 = std::chrono::high_resolution_clock::now();
     auto [g_id, search_status] = search(c.start, c.goal, g, w_space, obs_vec,
-                                        rrt::collision_check, c.eps, c.iter_lim, c.verbose);
+                                        rrt::collision_check_1, c.eps, c.iter_lim, c.verbose);
     auto t2 = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
 

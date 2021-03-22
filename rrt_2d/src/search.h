@@ -17,7 +17,9 @@
 #define RRT_2D_SEARCH_H
 namespace rrt {
 
-    inline bool collision_check(Point2D a, Point2D b, const CircleObstacle &c) {
+    inline bool collision_check_1(Point2D &pa, Point2D &pb, const CircleObstacle &c) {
+        Point2D a = pa;
+        Point2D b = pb;
         a.x -= c.center.x;
         a.y -= c.center.y;
         b.x -= c.center.x;
@@ -34,9 +36,31 @@ namespace rrt {
         return false;
     }
 
+    inline bool collision_check_2(Point2D& a, Point2D& b, const CircleObstacle &c) {
+        const double ab_dist = a.eu_dist(b);
+        const double dist_thresh = 0.5;
+        if(a.eu_dist(c.center) < c.r) return true;
+        if(b.eu_dist(c.center) < c.r) return true;
+        if(ab_dist <= dist_thresh) return false;
+        double ratio = dist_thresh / ab_dist;
+        Point2D test;
+        while(ratio < 1) {
+            test.x = (1 - ratio) * a.x + ratio * b.x;
+            test.y = (1 - ratio) * a.y + ratio * b.y;
+            if (test.eu_dist(c.center) < c.r) return true;
+            ratio += ratio;
+        }
+        return false;
+    }
+
+    inline bool collision_check_3(Point2D& a, Point2D& b, const CircleObstacle &c) {
+        if(b.eu_dist(c.center) < c.r) return true;
+        return false;
+    }
+
     std::pair<int, bool>
     search(const Point2D &start, const GoalZone &goal, Graph &g, Workspace &w_space, const ObstacleVec &obs_vec,
-           const std::function<bool(Point2D, Point2D, const CircleObstacle&)> &collision_func,
+           const std::function<bool(Point2D&, Point2D&, const CircleObstacle&)> &collision_func,
            const double eps = 1, const int iter_lim = 1e8, const int verbose = 0) {
 
         auto s_id = boost::add_vertex(g);

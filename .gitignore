@@ -13,3 +13,6 @@
 # ignore logs
 **/logs/
 
+# ignore temp files
+temp.*
+temp?.*
