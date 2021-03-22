@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(rrt_2d_adv)
+project(rrt_adv)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -13,5 +13,5 @@ INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 set(Eigen3_DIR /home/yashb/cpp_libs/eigen-3.3.9)
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
-add_executable(rrt_2d_adv src/rrt.cpp)
-target_link_libraries(rrt_2d_adv Boost::program_options)
+add_executable(rrt_adv src/rrt.cpp)
+target_link_libraries(rrt_adv Boost::program_options)

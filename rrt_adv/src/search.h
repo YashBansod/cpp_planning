@@ -3,7 +3,7 @@
  *
  * @file
  *
- * @ingroup     rrt_2d
+ * @ingroup     rrt_adv
  */
 
 /*------------------------------------------        Include Files           ------------------------------------------*/
@@ -13,8 +13,8 @@
 #include "graph_def.h"
 
 /*------------------------------------------            Definitions         ------------------------------------------*/
-#ifndef RRT_2D_ADV_SEARCH_H
-#define RRT_2D_ADV_SEARCH_H
+#ifndef RRT_ADV_SEARCH_H
+#define RRT_ADV_SEARCH_H
 namespace rrt {
 
     inline bool collision_check(Point2D a, Point2D b, const CircleObstacle &c) {
@@ -103,6 +103,6 @@ namespace rrt {
         return {g_id, found_goal};
     }
 }
-#endif //RRT_2D_ADV_SEARCH_H
+#endif //RRT_ADV_SEARCH_H
 
 

@@ -3,7 +3,7 @@
  *
  * @file
  *
- * @ingroup     rrt_2d_adv
+ * @ingroup     rrt_adv
  */
 
 /*------------------------------------------        Include Files           ------------------------------------------*/
@@ -17,8 +17,8 @@
 namespace po = boost::program_options;
 
 /*------------------------------------------            Definitions         ------------------------------------------*/
-#ifndef RRT_2D_ADV_UTILS_H
-#define RRT_2D_ADV_UTILS_H
+#ifndef RRT_ADV_UTILS_H
+#define RRT_ADV_UTILS_H
 namespace rrt {
     struct Config {
         int verbose = 0, iter_lim = 1e8, r_seed = -1;
@@ -148,4 +148,4 @@ namespace rrt {
         } else if (verbose) std::cout << "Could not open the file \"" << file_name << "\".\n" << std::endl;
     }
 }
-#endif //RRT_2D_ADV_UTILS_H
+#endif //RRT_ADV_UTILS_H

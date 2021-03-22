@@ -1,4 +1,4 @@
-# rrt_2d
+# rrt_adv
 
 ## Overview
 This is a basic graph based rapidly-exploring random tree (RRT) search implementation in C++17.  

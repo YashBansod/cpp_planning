@@ -3,7 +3,7 @@
  *
  * @file
  *
- * @ingroup     rrt_2d_adv
+ * @ingroup     rrt_adv
  */
 
 /*------------------------------------------        Include Files           ------------------------------------------*/
@@ -14,8 +14,8 @@
 #include "boost/graph/adjacency_list.hpp"
 
 /*------------------------------------------            Definitions         ------------------------------------------*/
-#ifndef RRT_2D_ADV_GRAPH_DEF_H
-#define RRT_2D_ADV_GRAPH_DEF_H
+#ifndef RRT_ADV_GRAPH_DEF_H
+#define RRT_ADV_GRAPH_DEF_H
 namespace rrt {
 
     struct Point2D {
@@ -125,4 +125,4 @@ namespace rrt {
     }
 }
 
-#endif //RRT_2D_ADV_GRAPH_DEF_H
+#endif //RRT_ADV_GRAPH_DEF_H
