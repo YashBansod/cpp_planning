@@ -8,6 +8,7 @@
 
 /*------------------------------------------        Include Files           ------------------------------------------*/
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <random>
@@ -34,7 +35,7 @@ namespace rrt {
     };
 
     inline std::ostream &operator<<(std::ostream &o_str, const Point2D &p) {
-        o_str << "x: " << p.x << ", y: " << p.y << " ";
+        o_str << "x: " << std::setw(8)<< p.x << ", y: " << std::setw(8)<< p.y << " ";
         return o_str;
     }
 
@@ -58,7 +59,7 @@ namespace rrt {
     };
 
     inline std::ostream &operator<<(std::ostream &o_str, const Point2_1D &p) {
-        o_str << p.p << ", o: " << p.o << " ";
+        o_str << p.p << ", o: " << std::setw(8)<< p.o << " ";
         return o_str;
     }
 
@@ -68,25 +69,41 @@ namespace rrt {
         return i_str;
     }
 
-    struct RoboState{
-        double x, y, o, v, w;
-        RoboState() : x(0), y(0), o(0), v(0), w(0) {}
-        RoboState(double _x, double _y, double _o, double _v, double _w) : x(_x), y(_y), o(_o), v(_v), w(_w) {}
-        RoboState(double _x, double _y, double _o) : x(_x), y(_y), o(_o), v(0), w(0) {}
-        template <typename T>
-        double eu_dist(const T& rs2) const{
-            return std::sqrt(std::pow(rs2.x - x, 2) + std::pow(rs2.y - y, 2));}
+    struct ControlInput{
+        double a, g;
+        ControlInput() : a(0), g(0) {}
+        ControlInput(double _a, double _g) : a(_a), g(_g) {}
     };
 
-    inline std::ostream &operator<<(std::ostream &o_str, const RoboState &rs) {
-        o_str << "x: " << rs.x << ", y: " << rs.y << "o: " << rs.o << ", v: " << rs.v << "w: " << rs.w << " ";
+    inline std::ostream &operator<<(std::ostream &o_str, const ControlInput &c) {
+        o_str << "a: " << std::setw(8)<< c.a << ", g: " << std::setw(8)<< c.g << " ";
         return o_str;
     }
 
-    inline std::istream &operator>>(std::istream &i_str, RoboState &p) {
-        char temp;
-        i_str >> temp >>  p.x >> temp >> p.y >> temp >> p.o >> temp;
-        return i_str;
+    struct RoboState{
+        Point2_1D p2_1;
+        double v, w;
+        RoboState() : p2_1(), v(0), w(0) {}
+        RoboState(double _x, double _y, double _o, double _v, double _w) : p2_1(_x, _y, _o), v(_v), w(_w) {}
+        RoboState(const Point2_1D& _p2_1, double _v, double _w) : p2_1(_p2_1), v(_v), w(_w) {}
+    };
+
+    inline std::ostream &operator<<(std::ostream &o_str, const RoboState &rs) {
+        o_str << rs.p2_1 << ", v: " << std::setw(8)<< rs.v << ", w: " << std::setw(8)<< rs.w << " ";
+        return o_str;
+    }
+
+    struct TrajPoint{
+        double t_stamp;
+        RoboState r;
+        ControlInput c;
+        TrajPoint() : t_stamp(0), r(), c() {}
+        TrajPoint(double _t, const RoboState& _r, const ControlInput& _c) : t_stamp(_t), r(_r), c(_c) {}
+    };
+
+    inline std::ostream &operator<<(std::ostream &o_str, const TrajPoint &tp) {
+        o_str << "t_stamp: " << std::setw(8)<< tp.t_stamp << ", " << tp.r << tp.c << " ";
+        return o_str;
     }
 
     struct Workspace {
@@ -179,6 +196,20 @@ namespace rrt {
     typedef std::vector<Point2D> RoboGeometry;
 
     inline std::ostream &operator<<(std::ostream &o_str, const RoboGeometry &v) {
+        for(auto& x: v) o_str << x << std::endl;
+        return o_str;
+    }
+
+    typedef std::vector<Point2_1D> PathVec;
+
+    inline std::ostream &operator<<(std::ostream &o_str, const PathVec &v) {
+        for(auto& x: v) o_str << x << std::endl;
+        return o_str;
+    }
+
+    typedef std::vector<TrajPoint> TrajVec;
+
+    inline std::ostream &operator<<(std::ostream &o_str, const TrajVec &v) {
         for(auto& x: v) o_str << x << std::endl;
         return o_str;
     }

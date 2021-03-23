@@ -15,3 +15,6 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 add_executable(rrt_adv src/rrt.cpp)
 target_link_libraries(rrt_adv Boost::program_options)
+
+add_executable(post_process src/post_process_path.cpp)
+target_link_libraries(post_process Boost::program_options)

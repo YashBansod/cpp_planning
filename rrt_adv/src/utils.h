@@ -136,6 +136,28 @@ namespace rrt {
         } else if (verbose) std::cout << "Could not read the file \"" << f_name << "\".\n" << std::endl;
     }
 
+    void read_path(const std::string &f_name, PathVec &p, const int verbose = 0) {
+        std::ifstream path_file(f_name);
+        if (path_file.is_open()) {
+            if (verbose) std::cout << "Successfully opened the path file: " << f_name << std::endl;
+            std::string temp;
+            int i;
+            double x, y, o;
+
+            while (!path_file.eof()) {
+                path_file >> i >> temp >> x >> temp >> y >> temp >> o;
+                if (path_file.good()) {
+                    Point2_1D point2_1d = {x, y, o};
+                    p.emplace_back(point2_1d);
+                }
+            }
+            path_file.close();
+            std::reverse(p.begin(), p.end());
+            if (verbose > 2) std::cout << p << std::endl;
+            if (verbose) std::cout << p.size()<< " points were added to path vector.\n" << std::endl;
+        } else if (verbose) std::cout << "Could not read the file \"" << f_name << "\".\n" << std::endl;
+    }
+
     void write_path(const std::string &file_name, const int goal_node_id, const Graph &g, const int verbose = 0) {
         std::ofstream path_file(file_name);
         if (path_file.is_open()) {
@@ -143,8 +165,8 @@ namespace rrt {
             int c_node = goal_node_id;
             std::string wayp;
             while (c_node != -1) {
-                wayp = std::to_string(g[c_node].node_id + 1) + ", " +
-                       std::to_string(g[c_node].node.p.x) + ", " + std::to_string(g[c_node].node.p.y);
+                wayp = std::to_string(g[c_node].node_id + 1) + ", " + std::to_string(g[c_node].node.p.x) + ", " +
+                        std::to_string(g[c_node].node.p.y) + ", " + std::to_string(g[c_node].node.o);
                 if (verbose > 2) std::cout << wayp << std::endl;
                 path_file << wayp << std::endl;
                 c_node = g[c_node].p_node_id;
@@ -164,13 +186,32 @@ namespace rrt {
                 p = g[*v].p_node_id;
                 if (p == -1) continue;
                 entry = std::to_string(g[*v].node_id + 1) + ", " + std::to_string(g[*v].node.p.x) + ", " +
-                        std::to_string(g[*v].node.p.y) + ", " + std::to_string(p + 1) + ", " +
-                        std::to_string(g[p].node.p.x) + ", " + std::to_string(g[p].node.p.y);
+                        std::to_string(g[*v].node.p.y) + ", " + std::to_string(g[*v].node.o) + ", " +
+                        std::to_string(p + 1) + ", " + std::to_string(g[p].node.p.x) + ", " +
+                        std::to_string(g[p].node.p.y) + ", " + std::to_string(g[p].node.o);
                 if (verbose > 2) std::cout << entry << std::endl;
                 graph_file << entry << std::endl;
             }
             graph_file.close();
             if (verbose) std::cout << "Successfully wrote graph file: \"" << file_name << "\".\n" << std::endl;
+        } else if (verbose) std::cout << "Could not open the file \"" << file_name << "\".\n" << std::endl;
+    }
+
+    void write_trajectory(const std::string &file_name, const TrajVec& t_vec, const int verbose = 0) {
+        std::ofstream traj_file(file_name);
+        if (traj_file.is_open()) {
+            if (verbose) std::cout << "Successfully opened the trajectory file: " << file_name << std::endl;
+            std::string entry;
+            for (auto&x : t_vec) {
+                entry = std::to_string(x.t_stamp) + ", " + std::to_string(x.r.p2_1.p.x) + ", " +
+                        std::to_string(x.r.p2_1.p.y) + ", " + std::to_string(x.r.p2_1.o) + ", " +
+                        std::to_string(x.r.v) + ", " + std::to_string(x.r.w) + ", " +
+                        std::to_string(x.c.a) + ", " + std::to_string(x.c.g);
+                if (verbose > 2) std::cout << entry << std::endl;
+                traj_file << entry << std::endl;
+            }
+            traj_file.close();
+            if (verbose) std::cout << "Successfully wrote trajectory file: \"" << file_name << "\".\n" << std::endl;
         } else if (verbose) std::cout << "Could not open the file \"" << file_name << "\".\n" << std::endl;
     }
 }
