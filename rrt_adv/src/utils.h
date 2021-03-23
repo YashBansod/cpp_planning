@@ -24,15 +24,15 @@ namespace rrt {
         int verbose = 0, iter_lim = 1e8, r_seed = -1;
         Point2_1D start;
         GoalZone goal;
-        double eps=5, delta = 0.5, goal_bias = 0.0;
+        double eps=5, goal_bias = 0.0;
         std::string obs_fp, robo_fp, path_fp, search_fp;
     };
 
     inline std::ostream &operator<<(std::ostream &o_str, const Config &c) {
-        o_str << "start: " << c.start << ", goal: " << c.goal << ", bias: " << c.goal_bias << ", seed: " << c.r_seed <<
-              ", delta: " << c.delta << ", eps: " << c.eps <<", verbose: " << c.verbose <<
-              ", iter_lim: " << c.iter_lim << "\nobs_fp: " << c.obs_fp << "\nrobo_fp: " << c.robo_fp <<
-              "\npath_fp: " << c.path_fp << "\nsearch_fp: " << c.search_fp << " ";
+        o_str << "start: " << c.start << ", goal: " << c.goal << ", bias: " << c.goal_bias << ", seed: " <<
+        c.r_seed << ", eps: " << c.eps <<", verbose: " << c.verbose << ", iter_lim: " << c.iter_lim <<
+        "\nobs_fp: " << c.obs_fp << "\nrobo_fp: " << c.robo_fp <<
+        "\npath_fp: " << c.path_fp << "\nsearch_fp: " << c.search_fp << " ";
         return o_str;
     }
 
@@ -50,8 +50,6 @@ namespace rrt {
                      "The goal bias. Probability in range [0, 1]")
                     ("eps,e", po::value<double>(&c.eps)->default_value(5),
                      "The maximum distance covered by a new trajectory during exploration.")
-                    ("delta,d", po::value<double>(&c.delta)->default_value(0.5),
-                     "The maximum distance between points in trajectory used for collision checks.")
                     ("iter_lim,i", po::value<int>(&c.iter_lim)->default_value(1e8),
                      "The maximum number of exploration iterations allowed.")
                     ("rand_seed,r", po::value<int>(&c.r_seed)->default_value(-1),

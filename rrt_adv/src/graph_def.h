@@ -35,7 +35,7 @@ namespace rrt {
     };
 
     inline std::ostream &operator<<(std::ostream &o_str, const Point2D &p) {
-        o_str << "x: " << std::setw(8)<< p.x << ", y: " << std::setw(8)<< p.y << " ";
+        o_str << "x: " <<  p.x << ", y: " <<  p.y << " ";
         return o_str;
     }
 
@@ -59,7 +59,7 @@ namespace rrt {
     };
 
     inline std::ostream &operator<<(std::ostream &o_str, const Point2_1D &p) {
-        o_str << p.p << ", o: " << std::setw(8)<< p.o << " ";
+        o_str << p.p << ", o: " <<  p.o << " ";
         return o_str;
     }
 
@@ -76,7 +76,7 @@ namespace rrt {
     };
 
     inline std::ostream &operator<<(std::ostream &o_str, const ControlInput &c) {
-        o_str << "a: " << std::setw(8)<< c.a << ", g: " << std::setw(8)<< c.g << " ";
+        o_str << "a: " <<  c.a << ", g: " <<  c.g << " ";
         return o_str;
     }
 
@@ -89,7 +89,7 @@ namespace rrt {
     };
 
     inline std::ostream &operator<<(std::ostream &o_str, const RoboState &rs) {
-        o_str << rs.p2_1 << ", v: " << std::setw(8)<< rs.v << ", w: " << std::setw(8)<< rs.w << " ";
+        o_str << rs.p2_1 << ", v: " <<  rs.v << ", w: " <<  rs.w << " ";
         return o_str;
     }
 
@@ -102,7 +102,7 @@ namespace rrt {
     };
 
     inline std::ostream &operator<<(std::ostream &o_str, const TrajPoint &tp) {
-        o_str << "t_stamp: " << std::setw(8)<< tp.t_stamp << ", " << tp.r << tp.c << " ";
+        o_str << "t_stamp: " <<  tp.t_stamp << ", " << tp.r << tp.c << " ";
         return o_str;
     }
 

@@ -12,9 +12,9 @@ from matplotlib.collections import LineCollection
 
 # ******************************************        Main Program Start      ****************************************** #
 def main():
-    file_index = 1
-    start = (30, -35, 90)
-    goal = (0, 0, 5)
+    # file_index = 1
+    # start = (30, -35, 90)
+    # goal = (0, 0, 5)
 
     # file_index = 2
     # start = (40, -40, 0)
@@ -23,22 +23,23 @@ def main():
     # file_index = 3
     # start = (30, 40, 270)
     # goal = (-50, -30, 5)
-    #
+
     # file_index = 4
     # start = (-50, -30, 90)
     # goal = (30, -35, 5)
-    #
-    # file_index = 5
-    # start = (-30, -35, 45)
-    # goal = (-35, 30, 5)
 
-    lw = [0.5, 1, 2]
-    ms = [5, 8, 10]
+    file_index = 5
+    start = (-30, -35, 45)
+    goal = (-35, 30, 5)
+
+    lw = [0.5, 1, 2, 3]
+    ms = [5, 8, 10, 12]
     sz = [15, 13]
 
     obstacles_fp = "../inputs/obstacles.txt"
     path_fp = "../outputs/path_output_%d.txt" % file_index
     search_fp = "../outputs/search_output_%d.txt" % file_index
+    traj_fp = "../outputs/traj_output_%d.txt" % file_index
 
     obstacles = []
     with open(obstacles_fp) as csv_file:
@@ -56,6 +57,13 @@ def main():
         for row in csv_reader:
             path.append((float(row[1]), float(row[2])))
     path = np.array(path)
+
+    traj = []
+    with open(traj_fp) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        for row in csv_reader:
+            traj.append((float(row[1]), float(row[2])))
+    traj = np.array(traj)
 
     search = []
     with open(search_fp) as csv_file:
@@ -84,7 +92,8 @@ def main():
         ax.add_collection(lc2)
 
     if path.shape[0] > 0:
-        plt.plot(path[:, 0], path[:, 1], '-p', c='green', lw=lw[2], ms=ms[1], label='Solution Path')
+        plt.plot(path[:, 0], path[:, 1], '-p', c='green', lw=lw[3], ms=ms[2], label='Solution Path')
+        plt.plot(traj[:, 0], traj[:, 1], '-x', c='orange', lw=lw[1], ms=ms[1], label='Solution Trajectory')
 
     plt.plot(start[0], start[1], 'D', c='blue', ms=ms[2], label="Start Node")
     plt.plot(goal[0], goal[1], 'X', c='red', ms=ms[2], label="Goal Node")
