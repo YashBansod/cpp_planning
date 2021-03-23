@@ -18,12 +18,19 @@
 #define RRT_ADV_GRAPH_DEF_H
 namespace rrt {
 
+    inline double deg0_360(double o){ return std::fmod(std::fmod(o, 360) + 360, 360);}
+    inline double rad0_2pi(double o){ return std::fmod(std::fmod(o, 2 * M_PI) + 2 * M_PI, 2 * M_PI);}
+    inline double deg2rad(double o){return o * M_PI / 180;}
+    inline double rad2deg(double o){return o * 180 / M_PI;}
+
     struct Point2D {
         double x, y;
         Point2D() : x(0), y(0) {}
         Point2D(double _x, double _y) : x(_x), y(_y) {}
         double eu_dist(const Point2D& p2) const{
             return std::sqrt(std::pow(p2.x - x, 2) + std::pow(p2.y - y, 2));}
+        double eu_dist_sq(const Point2D& p2) const{
+            return std::pow(p2.x - x, 2) + std::pow(p2.y - y, 2);}
     };
 
     inline std::ostream &operator<<(std::ostream &o_str, const Point2D &p) {
@@ -34,6 +41,51 @@ namespace rrt {
     inline std::istream &operator>>(std::istream &i_str, Point2D &p) {
         char temp;
         i_str >> temp >>  p.x >> temp >> p.y >> temp;
+        return i_str;
+    }
+
+    inline Point2D operator+(const Point2D& p1, const Point2D& p2){
+        Point2D p (p1.x + p2.x, p1.y + p2.y);
+        return p;
+    }
+
+    struct Point2_1D{
+        Point2D p;
+        double o;
+        Point2_1D() : p(), o(0) {}
+        Point2_1D(double _x, double _y, double _o) : p(_x, _y), o(_o) {}
+        Point2_1D(const Point2D& _p, double _o) : p(_p), o(_o) {}
+    };
+
+    inline std::ostream &operator<<(std::ostream &o_str, const Point2_1D &p) {
+        o_str << p.p << ", o: " << p.o << " ";
+        return o_str;
+    }
+
+    inline std::istream &operator>>(std::istream &i_str, Point2_1D &p) {
+        char temp;
+        i_str >> temp >>  p.p.x >> temp >> p.p.y >> temp >> p.o >> temp;
+        return i_str;
+    }
+
+    struct RoboState{
+        double x, y, o, v, w;
+        RoboState() : x(0), y(0), o(0), v(0), w(0) {}
+        RoboState(double _x, double _y, double _o, double _v, double _w) : x(_x), y(_y), o(_o), v(_v), w(_w) {}
+        RoboState(double _x, double _y, double _o) : x(_x), y(_y), o(_o), v(0), w(0) {}
+        template <typename T>
+        double eu_dist(const T& rs2) const{
+            return std::sqrt(std::pow(rs2.x - x, 2) + std::pow(rs2.y - y, 2));}
+    };
+
+    inline std::ostream &operator<<(std::ostream &o_str, const RoboState &rs) {
+        o_str << "x: " << rs.x << ", y: " << rs.y << "o: " << rs.o << ", v: " << rs.v << "w: " << rs.w << " ";
+        return o_str;
+    }
+
+    inline std::istream &operator>>(std::istream &i_str, RoboState &p) {
+        char temp;
+        i_str >> temp >>  p.x >> temp >> p.y >> temp >> p.o >> temp;
         return i_str;
     }
 
@@ -73,7 +125,7 @@ namespace rrt {
 
     struct Node {
         int node_id = -1;
-        Point2D node;
+        Point2_1D node;
         int p_node_id = -1;
         double g_cost = -1;
     };
@@ -120,6 +172,13 @@ namespace rrt {
     typedef std::vector<CircleObstacle> ObstacleVec;
 
     inline std::ostream &operator<<(std::ostream &o_str, const ObstacleVec &v) {
+        for(auto& x: v) o_str << x << std::endl;
+        return o_str;
+    }
+
+    typedef std::vector<Point2D> RoboGeometry;
+
+    inline std::ostream &operator<<(std::ostream &o_str, const RoboGeometry &v) {
         for(auto& x: v) o_str << x << std::endl;
         return o_str;
     }

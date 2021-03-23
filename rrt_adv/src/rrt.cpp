@@ -27,11 +27,15 @@ int main(int argc, char **argv) {
     rrt::ObstacleVec obs_vec;
     rrt::read_obstacles(c.obs_fp, obs_vec, c.verbose);
 
+    rrt::RoboGeometry robo_geo;
+    rrt::read_robot_geometry(c.robo_fp, robo_geo, c.verbose);
+
     rrt::Graph g;
 
+
     auto t1 = std::chrono::high_resolution_clock::now();
-    auto [g_id, search_status] = search(c.start, c.goal, g, w_space, obs_vec,
-                                        rrt::collision_check, c.eps, c.iter_lim, c.verbose);
+    auto [g_id, search_status] = rrt::search(c.start, c.goal, g, w_space, obs_vec, robo_geo,
+                                        rrt::collision_check_2, c.eps, c.iter_lim, c.verbose);
     auto t2 = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
 

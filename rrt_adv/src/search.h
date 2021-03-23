@@ -17,7 +17,9 @@
 #define RRT_ADV_SEARCH_H
 namespace rrt {
 
-    inline bool collision_check(Point2D a, Point2D b, const CircleObstacle &c) {
+    inline bool collision_check_1(const Point2D &pa, const Point2D &pb, const CircleObstacle &c) {
+        Point2D a = pa;
+        Point2D b = pb;
         a.x -= c.center.x;
         a.y -= c.center.y;
         b.x -= c.center.x;
@@ -34,9 +36,63 @@ namespace rrt {
         return false;
     }
 
+    inline bool collision_check_2(const Point2D& a, const Point2D& b, const CircleObstacle &c) {
+        const double ab_dist = a.eu_dist(b);
+        const double dist_thresh = 0.5;
+        if(a.eu_dist(c.center) < c.r) return true;
+        if(b.eu_dist(c.center) < c.r) return true;
+        if(ab_dist <= dist_thresh) return false;
+        double ratio = dist_thresh / ab_dist;
+        double const old_r = ratio;
+        Point2D test;
+        while(ratio < 1) {
+            test.x = (1 - ratio) * a.x + ratio * b.x;
+            test.y = (1 - ratio) * a.y + ratio * b.y;
+            if (test.eu_dist(c.center) < c.r) return true;
+            ratio += old_r;
+        }
+        return false;
+    }
+
+    inline bool collision_check_3(const Point2D& a, const Point2D& b, const CircleObstacle &c) {
+        if(b.eu_dist(c.center) < c.r) return true;
+        return false;
+    }
+
+//    inline RoboState forward_sim(const RoboState& r, const double accel, const double gamma, const double dt) {
+//        const double min_c = -50, max_c = 50;
+//        const double min_o = 0, max_o = 2 * M_Pi;
+//        const double min_v = -5, max_v = 5;
+//        const double min_w = -M_PI / 2, max_w = M_PI / 2;
+//        RoboState new_r;
+//        new_r.v = std::clamp(r.v + accel * dt, min_v, max_v);
+//        new_r.w = std::clamp(r.w + gamma * dt, min_w, max_w);
+//        new_r.o =
+//    }
+
+    inline RoboGeometry RotateRobot(RoboGeometry rob, const double theta){
+        for (auto &r: rob){
+            double x = r.x * std::cos(theta) - r.y * std::sin(theta);
+            double y = r.x * std::sin(theta) + r.y * std::cos(theta);
+            r.x = x;
+            r.y = y;
+        }
+        return rob;
+    }
+
+    inline bool GeomInWorkspace(const Point2D& offset, const RoboGeometry& rob, const Workspace& w){
+        for (auto &r: rob){
+            double x = r.x + offset.x, y = r.y + offset.y;
+            if((x < w.p1.x) or (x > w.p2.x)) return false;
+            if((y < w.p1.y) or (y > w.p2.y)) return false;
+        }
+        return true;
+    }
+
     std::pair<int, bool>
-    search(const Point2D &start, const GoalZone &goal, Graph &g, Workspace &w_space, const ObstacleVec &obs_vec,
-           const std::function<bool(Point2D, Point2D, const CircleObstacle&)> &collision_func,
+    search(const Point2_1D &start, const GoalZone &goal, Graph &g,
+           Workspace &w_space, const ObstacleVec &obs_vec, const RoboGeometry &robot,
+           const std::function<bool(const Point2D&, const Point2D&, const CircleObstacle&)> &collision_func,
            const double eps = 1, const int iter_lim = 1e8, const int verbose = 0) {
 
         auto s_id = boost::add_vertex(g);
@@ -47,20 +103,27 @@ namespace rrt {
 
         int g_id = -1;
         bool found_goal = false;
-        // If goal is completely covered by an obstacle then return failure.
-        for(auto& x: obs_vec){
-            if(x.center.eu_dist(goal.center) <= std::max(x.r, goal.r) - std::min(x.r, goal.r)) return {g_id, found_goal};
-            if(x.center.eu_dist(start) <= x.r) return {g_id, found_goal};
-        }
 
+        RoboGeometry _start_geom = RotateRobot(robot, g[s_id].node.o);
+        if (not GeomInWorkspace(g[s_id].node.p, _start_geom, w_space)) return {g_id, found_goal};
+
+        // If goal is completely covered by an obstacle then return failure.
+        for(auto& obs: obs_vec){
+            if(obs.center.eu_dist(goal.center) <= std::max(obs.r, goal.r) - std::min(obs.r, goal.r))
+                return {g_id, found_goal};
+            for(auto& pt : _start_geom){
+                bool collision = collision_check_3(g[s_id].node.p, g[s_id].node.p + pt, obs);
+                if(collision) return {g_id, found_goal};
+            }
+        }
 
         for(int _iter = 0; (not found_goal and _iter < iter_lim); ++_iter){
             Point2D rand_pt = w_space.sample();
             auto[v, end_v] = boost::vertices(g);
-            double min_dist = rand_pt.eu_dist(g[*v].node);
+            double min_dist = rand_pt.eu_dist(g[*v].node.p);
             int min_ind = *v++;
             for (; v != end_v; ++v) {
-                double dist = rand_pt.eu_dist(g[*v].node);
+                double dist = rand_pt.eu_dist(g[*v].node.p);
                 if (dist < min_dist) {
                     min_dist = dist;
                     min_ind = *v;
@@ -68,19 +131,56 @@ namespace rrt {
             }
             if (min_dist > eps) {
                 double ratio = eps / min_dist;
-                rand_pt.x = (1 - ratio) * g[min_ind].node.x + ratio * rand_pt.x;
-                rand_pt.y = (1 - ratio) * g[min_ind].node.y + ratio * rand_pt.y;
+                rand_pt.x = (1 - ratio) * g[min_ind].node.p.x + ratio * rand_pt.x;
+                rand_pt.y = (1 - ratio) * g[min_ind].node.p.y + ratio * rand_pt.y;
                 min_dist = eps;
             }
             bool collision = false;
+            double _theta = rad0_2pi(std::atan2(rand_pt.y - g[min_ind].node.p.y, rand_pt.x - g[min_ind].node.p.x));
+            double d_theta = rad0_2pi(_theta - g[min_ind].node.o);
+
+            RoboGeometry new_geom = RotateRobot(robot, _theta);
+            if (not GeomInWorkspace(g[min_ind].node.p, new_geom, w_space)) continue;
+            if (not GeomInWorkspace(rand_pt, new_geom, w_space)) continue;
+
+            double c_theta = M_PI / 8;
+            while(c_theta < d_theta){
+                RoboGeometry _geom = RotateRobot(robot, rad0_2pi(c_theta + g[min_ind].node.o));
+                if (not GeomInWorkspace(g[min_ind].node.p, _geom, w_space)){collision = true; break;}
+                for(auto& obs : obs_vec){
+                    if(collision) break;
+                    for(auto& pt : _geom){
+                        collision = collision_check_3(g[min_ind].node.p, g[min_ind].node.p + pt, obs);
+                        if(collision) break;
+                    }
+                }
+                if(collision) break;
+                c_theta += M_PI / 8;
+            }
+
+            if(collision) continue;
             for(auto& obs : obs_vec){
-                collision = collision_func(g[min_ind].node, rand_pt, obs);
+                for(auto& pt : new_geom){
+                    collision = collision_check_3(g[min_ind].node.p, g[min_ind].node.p + pt, obs);
+                    if(collision) break;
+                }
                 if(collision) break;
             }
+
+            if(collision) continue;
+            for(auto& obs : obs_vec){
+                for(auto& pt : new_geom) {
+                    collision = collision_func(g[min_ind].node.p + pt, rand_pt + pt, obs);
+                    if (collision) break;
+                }
+                if(collision) break;
+            }
+
             if(not collision) {
                 auto n_id = boost::add_vertex(g);
                 g[n_id].node_id = n_id;
-                g[n_id].node = rand_pt;
+                g[n_id].node.p = rand_pt;
+                g[n_id].node.o = _theta;
                 g[n_id].p_node_id = min_ind;
                 g[n_id].g_cost = g[min_ind].g_cost + min_dist;
 
